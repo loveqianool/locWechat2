@@ -19,7 +19,7 @@ pushurl='https://zhuye.heliohost.org/work.php?msg='
 def getcookies():
     url = 'https://www.hostloc.com/forum.php?mod=forumdisplay&fid=45&filter=author&orderby=dateline'
     js=js2py.EvalJs()
-    headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'}
 
     try:
         aesjs=requests.get("https://www.hostloc.com/aes.min.js",headers=headers,timeout=5).text
@@ -39,7 +39,7 @@ def getcookies():
 
 def getnewesttitle():
     url = 'https://www.hostloc.com/forum.php?mod=forumdisplay&fid=45&filter=author&orderby=dateline'
-    headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
+    headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'}
 
     requests.adapters.DEFAULT_RETRIES = 5
     s = requests.session()
@@ -50,7 +50,7 @@ def getnewesttitle():
     print result
     if (result):
         print 'hostloc start AES Decrypt ... '
-        headers = {'Cookie': cookiestr,'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
+        headers = {'Cookie': cookiestr,'user-agent': 'Mozilla/5.0 (Windows NT 10.0; rv:68.0) Gecko/20100101 Firefox/68.0'}
         r = s.get(url, headers=headers)
     else:
         r = s.get(url, headers=headers)
