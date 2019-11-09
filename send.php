@@ -1,21 +1,12 @@
 <?php
-
-//这里填入你申请的企业微信信息
-
-//企业id
-$corpid = 'ww0a4a2f150ee3ee99';
-//应用的Secret
-$corpsecret = 'eyG03FWk9Dbf2AciGd0y1mZPYTDHUT_2qNOcmQ502Tk';
-//推送的应用id
-$AgentId = '1000004';
-
-
 date_default_timezone_set('PRC');
+
 //如果不存在文本就禁止提交
 if(!isset($_REQUEST['msg']))
 {
   exit;
 }
+
 //获取发送数据数组
 function getDataArray($MsgArray)
 {
@@ -39,6 +30,8 @@ function getDataArray($MsgArray)
     );
     return $data;
 }
+
+
 //curl请求函数，微信都是通过该函数请求
 function https_request($url, $data = null)
 {
@@ -55,28 +48,33 @@ function https_request($url, $data = null)
     curl_close($curl);
     return $output;
 }
+
 /**
  * 开始推送
  */
+
 //替换你的ACCESS_TOKEN
-$ACCESS_TOKEN = json_decode(https_request("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=".$corpid."&corpsecret=".$corpsecret),true)["access_token"];
+$ACCESS_TOKEN = json_decode(https_request("https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=ww0a4a2f150ee3ee99&corpsecret=eyG03FWk9Dbf2AciGd0y1mZPYTDHUT_2qNOcmQ502Tk"),true)["access_token"];
 //模板消息请求URL
 $url = "https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=".$ACCESS_TOKEN;
 $MsgArray=array();
+
 //推送的应用id
-$MsgArray["agentid"]=$AgentId;
+$MsgArray["agentid"]="1000004";
+
 //标题是可选值
 if(!isset($_REQUEST['title'])){
-   $MsgArray["title"]="hostloc新帖提醒";
+   $MsgArray["title"]="新提醒";
 }
 else{
    $MsgArray["title"]=$_REQUEST['title'];
 }
 //推送的文本内容
 $MsgArray["msg"]=$_REQUEST['msg'];
+
 //推送时间
 $MsgArray["time"]=date('Y-m-d h:i:s',time());
-$MsgArray["url"]=$_REQUEST['url'];
+$MsgArray["url"]="http://script.haokaikai.cn/Remind/msg.php?title=".$MsgArray["title"]."&time=".$MsgArray["time"]."&msg=".$MsgArray["msg"];
 //转化成json数组让微信可以接收
 $json_data = json_encode(getDataArray($MsgArray));
 //echo $json_data;exit;
