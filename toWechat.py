@@ -12,6 +12,7 @@ import re
 #pip install js2py
 #pip install request
 #pip install requests
+
 #update your userids
 pushurl='https://zhuye.heliohost.org/work.php?msg='
 
