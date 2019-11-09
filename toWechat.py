@@ -13,7 +13,7 @@ import re
 #pip install request
 
 #update your userids 
-pushurl='https://wxmsg.youdomain.com/send.php?msg='
+pushurl='https://zhuye.heliohost.org/work.php?msg='
 
 
 def getcookies():
