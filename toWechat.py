@@ -68,7 +68,7 @@ def getnewesttitle():
     return resultArr
 
 def sendmessage(newesttitle,postUrl):
-    finalUrl = pushurl+ newesttitle + '&url=' + postUrl
+    finalUrl = pushurl + '&title=' + newesttitle + '&url=' + postUrl
 
     requests.adapters.DEFAULT_RETRIES = 5
     s = requests.session()
