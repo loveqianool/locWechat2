@@ -74,7 +74,10 @@ $MsgArray["msg"]=$_REQUEST['msg'];
 
 //推送时间
 $MsgArray["time"]=date('Y-m-d h:i:s',time());
+
 //$MsgArray["url"]="http://script.haokaikai.cn/Remind/msg.php?title=".$MsgArray["title"]."&time=".$MsgArray["time"]."&msg=".$MsgArray["msg"];
+$MsgArray["url"]=$_REQUEST['url'];
+
 //转化成json数组让微信可以接收
 $json_data = json_encode(getDataArray($MsgArray));
 //echo $json_data;exit;
