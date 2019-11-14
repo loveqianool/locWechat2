@@ -1,4 +1,4 @@
-# encoding=utf8 
+# encoding=utf8
 #!/usr/bin/python
 import requests
 from bs4 import BeautifulSoup
@@ -6,15 +6,12 @@ import time
 import js2py
 import re
 
-#execute this commands before run this script 
+#execute this commands before run this script
 
-#pip install beautifulsoup4
-#pip install js2py
-#pip install request
+#pip install beautifulsoup4 js2py request requests
 
-#update your userids 
+#update your userids
 pushurl='https://zhuye.heliohost.org/work.php?msg='
-
 
 def getcookies():
     url = 'https://www.hostloc.com/forum.php?mod=forumdisplay&fid=45&filter=author&orderby=dateline'
@@ -23,18 +20,18 @@ def getcookies():
 
     try:
         aesjs=requests.get("https://www.hostloc.com/aes.min.js",headers=headers,timeout=5).text
-    except Exception, e:
-        print 'ReturnNothing'
+    except Exception as e:
+        print ('ReturnNothing')
         return 'ReturnNothing'
     #print aesjs
     js.execute(aesjs)
     getcookie=requests.get(url).text
-    #print getcookie
+    #print (getcookie)
     getcookie_script=re.findall("<script>(.*?)</script>",getcookie)
     js.execute(getcookie_script[0].split("document")[0])
     data=js.toHex(js.slowAES.decrypt(js.c, 2, js.a, js.b))
-    cookie="L7DFW="+data 
-    print cookie 
+    cookie="L7DFW="+data
+    print (cookie)
     return cookie
 
 def getnewesttitle():
@@ -42,39 +39,38 @@ def getnewesttitle():
     headers = {'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
 
     requests.adapters.DEFAULT_RETRIES = 5
-    s = requests.session() 
+    s = requests.session()
     s.keep_alive = False
-    
-    
+
     result = 'L7DFW' in cookiestr
-    print result
+    print (result)
     if (result):
-        print 'hostloc start AES Decrypt ... '
+        print ('hostloc start AES Decrypt ... ')
         headers = {'Cookie': cookiestr,'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.76 Mobile Safari/537.36'}
         r = s.get(url, headers=headers)
     else:
-        r = s.get(url, headers=headers)    
+        r = s.get(url, headers=headers)
 
     soup = BeautifulSoup(r.text,'html.parser')
     newest = soup.find('span',class_='by')
-    #print newest.text 
+    #print newest.text
     pid = r.text[r.text.find('tid')+4:r.text.find('tid')+10]
     post_url = "https://www.hostloc.com/thread-{}-1-1.html".format(pid)
 
     #print post_url
-    print ('monitor is runing ,please wait for a monent')
+    print ('monitor is runing please wait for a monent')
 
     resultArr = [newest.parent.text,post_url]
     return resultArr
 
-def sendmessage(newesttitle,postUrl): 
+def sendmessage(newesttitle,postUrl):
     finalUrl = pushurl + '&title=' + newesttitle + '&url=' + postUrl
 
     requests.adapters.DEFAULT_RETRIES = 5
-    s = requests.session() 
+    s = requests.session()
     s.keep_alive = False
-    s.get(finalUrl)       
-    
+    s.get(finalUrl)
+
     print('send a new message to wechat')
 
 cookiestr = getcookies()
@@ -83,26 +79,26 @@ newesttitle = firstArr[0]
 sendmessage(firstArr[0],firstArr[1])
 while True:
     try:
-        time.sleep(30)  
+        time.sleep(30)
         try:
           newArr = getnewesttitle()
         finally:
-          time.sleep(5)  
+          time.sleep(5)
           pass
         thenexttitle = newArr[0]
         postUrl = newArr[1]
         print('monitoring...')
-        print 'old message is ' + newesttitle.encode('utf-8')
-        print 'new message is ' + thenexttitle.encode('utf-8')
-        print postUrl.encode('utf-8')
+        print ('old message is ', newesttitle.encode('utf-8'))
+        print ('new message is ', thenexttitle.encode('utf-8'))
+        print (postUrl.encode('utf-8'))
         if thenexttitle != newesttitle:
             newesttitle = thenexttitle
-            print('find new message ,reading....')           
+            print('find new message ,reading....')
             sendmessage(thenexttitle,postUrl)
-            
+
             pass
         else:
             pass
     except RuntimeError:
         print(RuntimeError)
-    pass     
+    pass
