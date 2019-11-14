@@ -26,7 +26,7 @@ def getcookies():
     #print aesjs
     js.execute(aesjs)
     getcookie=requests.get(url).text
-    #print (getcookie)
+    print (getcookie)
     getcookie_script=re.findall("<script>(.*?)</script>",getcookie)
     js.execute(getcookie_script[0].split("document")[0])
     data=js.toHex(js.slowAES.decrypt(js.c, 2, js.a, js.b))
@@ -88,9 +88,9 @@ while True:
         thenexttitle = newArr[0]
         postUrl = newArr[1]
         print('monitoring...')
-        print ('old message is ', newesttitle.encode('utf-8'))
-        print ('new message is ', thenexttitle.encode('utf-8'))
-        print (postUrl.encode('utf-8'))
+        print ('old message is ', newesttitle)
+        print ('new message is ', thenexttitle)
+        print (postUrl)
         if thenexttitle != newesttitle:
             newesttitle = thenexttitle
             print('find new message ,reading....')
